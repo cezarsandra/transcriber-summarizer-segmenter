@@ -1,0 +1,1001 @@
+{
+  "segments": [
+    {
+      "start": 192.9,
+      "duration": 32.83000000000001,
+      "end": 225.73000000000002,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 231.48,
+      "duration": 243.35,
+      "end": 474.83,
+      "speaker": "speaker_4"
+    },
+    {
+      "start": 475.18,
+      "duration": 0.69,
+      "end": 475.87,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 475.88,
+      "duration": 16.46999999999997,
+      "end": 492.34999999999997,
+      "speaker": "speaker_4"
+    },
+    {
+      "start": 493.64,
+      "duration": 245.97000000000003,
+      "end": 739.61,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 739.72,
+      "duration": 0.55,
+      "end": 740.27,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 740.6,
+      "duration": 40.73000000000002,
+      "end": 781.33,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 798.58,
+      "duration": 3.3299999999999272,
+      "end": 801.91,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 812.98,
+      "duration": 9.470000000000027,
+      "end": 822.45,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 829.26,
+      "duration": 1.71,
+      "end": 830.97,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 844.14,
+      "duration": 1.6900000000000546,
+      "end": 845.83,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 857.58,
+      "duration": 7.269999999999982,
+      "end": 864.85,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 872.34,
+      "duration": 64.05000000000007,
+      "end": 936.3900000000001,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 944.56,
+      "duration": 31.690000000000055,
+      "end": 976.25,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 983.88,
+      "duration": 3.269999999999982,
+      "end": 987.15,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 996.18,
+      "duration": 6.710000000000036,
+      "end": 1002.89,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 1021.22,
+      "duration": 0.51,
+      "end": 1021.73,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 1029.72,
+      "duration": 9.529999999999973,
+      "end": 1039.25,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 1041.8,
+      "duration": 65.19000000000005,
+      "end": 1106.99,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 1113.94,
+      "duration": 0.51,
+      "end": 1114.45,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 1114.52,
+      "duration": 0.87,
+      "end": 1115.3899999999999,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 1130.46,
+      "duration": 68.52999999999997,
+      "end": 1198.99,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 1263.48,
+      "duration": 1.09,
+      "end": 1264.57,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 1270.04,
+      "duration": 0.73,
+      "end": 1270.77,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 1278.02,
+      "duration": 0.59,
+      "end": 1278.61,
+      "speaker": "speaker_5"
+    },
+    {
+      "start": 1284.22,
+      "duration": 2.3299999999999272,
+      "end": 1286.55,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 1358.84,
+      "duration": 0.57,
+      "end": 1359.4099999999999,
+      "speaker": "cezar_sandra"
+    },
+    {
+      "start": 1359.82,
+      "duration": 0.51,
+      "end": 1360.33,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 1362.9,
+      "duration": 0.57,
+      "end": 1363.47,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 1369.82,
+      "duration": 0.57,
+      "end": 1370.3899999999999,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 1813.72,
+      "duration": 1.25,
+      "end": 1814.97,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 1821.92,
+      "duration": 6.829999999999927,
+      "end": 1828.75,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 1828.9,
+      "duration": 1.51,
+      "end": 1830.41,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 1831.1,
+      "duration": 1.73,
+      "end": 1832.83,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 1844.76,
+      "duration": 5.4500000000000455,
+      "end": 1850.21,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 1857.66,
+      "duration": 0.77,
+      "end": 1858.43,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 1879.82,
+      "duration": 0.81,
+      "end": 1880.6299999999999,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 1893.0,
+      "duration": 19.36999999999989,
+      "end": 1912.37,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 1919.5,
+      "duration": 5.429999999999836,
+      "end": 1924.9299999999998,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 1941.12,
+      "duration": 0.87,
+      "end": 1941.9899999999998,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 1954.16,
+      "duration": 5.349999999999909,
+      "end": 1959.51,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 1972.34,
+      "duration": 5.190000000000055,
+      "end": 1977.53,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 1985.58,
+      "duration": 22.110000000000127,
+      "end": 2007.69,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 2016.36,
+      "duration": 4.269999999999982,
+      "end": 2020.6299999999999,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 2037.5,
+      "duration": 1.81,
+      "end": 2039.31,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 2059.2,
+      "duration": 667.4299999999998,
+      "end": 2726.6299999999997,
+      "speaker": "cezar_sandra"
+    },
+    {
+      "start": 2731.9,
+      "duration": 16.889999999999873,
+      "end": 2748.79,
+      "speaker": "cezar_sandra"
+    },
+    {
+      "start": 2758.38,
+      "duration": 24.129999999999654,
+      "end": 2782.5099999999998,
+      "speaker": "cezar_sandra"
+    },
+    {
+      "start": 2789.86,
+      "duration": 342.69000000000005,
+      "end": 3132.55,
+      "speaker": "cezar_sandra"
+    },
+    {
+      "start": 3134.78,
+      "duration": 28.609999999999673,
+      "end": 3163.39,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 3258.52,
+      "duration": 0.61,
+      "end": 3259.13,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 3259.26,
+      "duration": 0.91,
+      "end": 3260.17,
+      "speaker": "cezar_sandra"
+    },
+    {
+      "start": 3260.36,
+      "duration": 4.389999999999873,
+      "end": 3264.75,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 3266.96,
+      "duration": 1.875,
+      "end": 3268.835,
+      "speaker": "cezar_sandra"
+    },
+    {
+      "start": 3268.835,
+      "duration": 4.955000000000382,
+      "end": 3273.7900000000004,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 3310.02,
+      "duration": 2.130000000000109,
+      "end": 3312.15,
+      "speaker": "cezar_sandra"
+    },
+    {
+      "start": 3313.64,
+      "duration": 0.65,
+      "end": 3314.29,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 3314.64,
+      "duration": 0.67,
+      "end": 3315.31,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 3317.14,
+      "duration": 0.85,
+      "end": 3317.99,
+      "speaker": "cezar_sandra"
+    },
+    {
+      "start": 3321.18,
+      "duration": 0.65,
+      "end": 3321.83,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 3538.14,
+      "duration": 3.8900000000003274,
+      "end": 3542.03,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 3547.32,
+      "duration": 0.65,
+      "end": 3547.9700000000003,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 3625.52,
+      "duration": 10.230000000000018,
+      "end": 3635.75,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 3710.94,
+      "duration": 0.61,
+      "end": 3711.55,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 3804.42,
+      "duration": 0.51,
+      "end": 3804.9300000000003,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 3815.74,
+      "duration": 0.63,
+      "end": 3816.37,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 3899.26,
+      "duration": 2.1299999999996544,
+      "end": 3901.39,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 4143.92,
+      "duration": 0.63,
+      "end": 4144.55,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 4205.76,
+      "duration": 0.67,
+      "end": 4206.43,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 4292.96,
+      "duration": 96.3090000000002,
+      "end": 4389.269,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 4654.38,
+      "duration": 11.989999999999782,
+      "end": 4666.37,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 5079.04,
+      "duration": 79.09000000000015,
+      "end": 5158.13,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 5172.72,
+      "duration": 80.02999999999975,
+      "end": 5252.75,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 5260.9,
+      "duration": 17.470000000000255,
+      "end": 5278.37,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 5288.26,
+      "duration": 54.88999999999942,
+      "end": 5343.15,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 5353.54,
+      "duration": 560.5900000000001,
+      "end": 5914.13,
+      "speaker": "speaker_3"
+    },
+    {
+      "start": 5914.14,
+      "duration": 0.51,
+      "end": 5914.650000000001,
+      "speaker": "cezar_sandra"
+    },
+    {
+      "start": 5914.76,
+      "duration": 129.53000000000065,
+      "end": 6044.290000000001,
+      "speaker": "speaker_3"
+    },
+    {
+      "start": 6045.959,
+      "duration": 7.571,
+      "end": 6053.53,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 6076.68,
+      "duration": 17.229999999999563,
+      "end": 6093.91,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6099.1,
+      "duration": 26.029999999999745,
+      "end": 6125.13,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6130.96,
+      "duration": 108.11099999999988,
+      "end": 6239.071,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6244.24,
+      "duration": 0.569,
+      "end": 6244.809,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6250.96,
+      "duration": 11.27099999999973,
+      "end": 6262.231,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6267.96,
+      "duration": 0.909,
+      "end": 6268.869,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6274.96,
+      "duration": 45.84900000000016,
+      "end": 6320.809,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6326.9,
+      "duration": 11.3100000000004,
+      "end": 6338.21,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6344.68,
+      "duration": 8.289999999999054,
+      "end": 6352.969999999999,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6364.96,
+      "duration": 1.9700000000002547,
+      "end": 6366.93,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6372.94,
+      "duration": 2.9700000000002547,
+      "end": 6375.91,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6381.16,
+      "duration": 3.8300000000008367,
+      "end": 6384.990000000001,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6386.1,
+      "duration": 6.03,
+      "end": 6392.13,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 6458.779,
+      "duration": 6.585999999999331,
+      "end": 6465.365,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6465.365,
+      "duration": 0.75,
+      "end": 6466.115,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 6466.115,
+      "duration": 7.015999999999622,
+      "end": 6473.130999999999,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6473.18,
+      "duration": 2.3299999999999272,
+      "end": 6475.51,
+      "speaker": "speaker_3"
+    },
+    {
+      "start": 6476.68,
+      "duration": 0.85,
+      "end": 6477.530000000001,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 6477.54,
+      "duration": 0.99,
+      "end": 6478.53,
+      "speaker": "speaker_3"
+    },
+    {
+      "start": 6478.72,
+      "duration": 0.709,
+      "end": 6479.429,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6480.62,
+      "duration": 9.670000000000073,
+      "end": 6490.29,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 6500.34,
+      "duration": 4.528999999999542,
+      "end": 6504.869,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 6518.2,
+      "duration": 5.970999999999549,
+      "end": 6524.170999999999,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 6529.86,
+      "duration": 0.65,
+      "end": 6530.509999999999,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 6537.74,
+      "duration": 10.69000000000051,
+      "end": 6548.43,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 6553.68,
+      "duration": 3.9099999999998545,
+      "end": 6557.59,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6558.86,
+      "duration": 1.549,
+      "end": 6560.409,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 6562.16,
+      "duration": 0.57,
+      "end": 6562.73,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 6563.4,
+      "duration": 2.351,
+      "end": 6565.750999999999,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6565.959,
+      "duration": 1.875,
+      "end": 6567.834,
+      "speaker": "speaker_3"
+    },
+    {
+      "start": 6567.834,
+      "duration": 15.735999999999876,
+      "end": 6583.57,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 6592.22,
+      "duration": 10.429999999999382,
+      "end": 6602.65,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 6613.42,
+      "duration": 3.2899999999999636,
+      "end": 6616.71,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 6622.1,
+      "duration": 16.768999999999323,
+      "end": 6638.869,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 6639.52,
+      "duration": 0.57,
+      "end": 6640.09,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6641.62,
+      "duration": 0.73,
+      "end": 6642.349999999999,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 6649.701,
+      "duration": 5.748999999999796,
+      "end": 6655.45,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 6663.38,
+      "duration": 0.61,
+      "end": 6663.99,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 6671.18,
+      "duration": 0.589,
+      "end": 6671.769,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 6672.14,
+      "duration": 1.89,
+      "end": 6674.030000000001,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 6679.68,
+      "duration": 0.629,
+      "end": 6680.309,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 6685.38,
+      "duration": 11.409999999999854,
+      "end": 6696.79,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 6704.4,
+      "duration": 154.51000000000022,
+      "end": 6858.91,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 7195.16,
+      "duration": 115.25,
+      "end": 7310.41,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 7316.82,
+      "duration": 38.1899999999996,
+      "end": 7355.009999999999,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 7356.1,
+      "duration": 0.611,
+      "end": 7356.711,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 7357.38,
+      "duration": 3.5900000000001455,
+      "end": 7360.97,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 7361.221,
+      "duration": 0.829,
+      "end": 7362.049999999999,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 7362.12,
+      "duration": 16.170000000000073,
+      "end": 7378.29,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 7378.6,
+      "duration": 0.689,
+      "end": 7379.289000000001,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 7379.98,
+      "duration": 2.31,
+      "end": 7382.29,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 7382.521,
+      "duration": 0.67,
+      "end": 7383.191,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 7383.339,
+      "duration": 23.991000000000895,
+      "end": 7407.330000000001,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 7447.819,
+      "duration": 43.97099999999955,
+      "end": 7491.79,
+      "speaker": "speaker_3"
+    },
+    {
+      "start": 7494.22,
+      "duration": 0.729,
+      "end": 7494.9490000000005,
+      "speaker": "cezar_sandra"
+    },
+    {
+      "start": 7495.2,
+      "duration": 28.051000000000386,
+      "end": 7523.251,
+      "speaker": "speaker_3"
+    },
+    {
+      "start": 7523.54,
+      "duration": 1.11,
+      "end": 7524.65,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 7524.7,
+      "duration": 13.75,
+      "end": 7538.45,
+      "speaker": "speaker_3"
+    },
+    {
+      "start": 7576.82,
+      "duration": 8.290000000000873,
+      "end": 7585.110000000001,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 7585.54,
+      "duration": 1.125,
+      "end": 7586.665,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 7586.665,
+      "duration": 6.0460000000002765,
+      "end": 7592.711,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 7593.14,
+      "duration": 0.77,
+      "end": 7593.910000000001,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 7594.02,
+      "duration": 3.869999999999891,
+      "end": 7597.89,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 7598.08,
+      "duration": 0.67,
+      "end": 7598.75,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 7598.82,
+      "duration": 2.09,
+      "end": 7600.91,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 7601.02,
+      "duration": 0.65,
+      "end": 7601.67,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 7602.12,
+      "duration": 1.59,
+      "end": 7603.71,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 7603.94,
+      "duration": 1.125,
+      "end": 7605.065,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 7605.065,
+      "duration": 9.905000000000655,
+      "end": 7614.97,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 7654.54,
+      "duration": 31.889999999999418,
+      "end": 7686.429999999999,
+      "speaker": "speaker_3"
+    },
+    {
+      "start": 7686.521,
+      "duration": 0.649,
+      "end": 7687.17,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 7687.5,
+      "duration": 12.13000000000011,
+      "end": 7699.63,
+      "speaker": "speaker_3"
+    },
+    {
+      "start": 7699.84,
+      "duration": 1.41,
+      "end": 7701.25,
+      "speaker": "speaker_6"
+    },
+    {
+      "start": 7701.259,
+      "duration": 11.571000000000822,
+      "end": 7712.830000000001,
+      "speaker": "speaker_3"
+    },
+    {
+      "start": 7751.98,
+      "duration": 20.43000000000029,
+      "end": 7772.41,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 7772.52,
+      "duration": 0.71,
+      "end": 7773.2300000000005,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 7773.42,
+      "duration": 23.75,
+      "end": 7797.17,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 7837.74,
+      "duration": 42.595000000000255,
+      "end": 7880.335,
+      "speaker": "speaker_3"
+    },
+    {
+      "start": 7880.335,
+      "duration": 0.815,
+      "end": 7881.15,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 7881.42,
+      "duration": 11.850000000000364,
+      "end": 7893.27,
+      "speaker": "speaker_3"
+    },
+    {
+      "start": 7893.46,
+      "duration": 0.67,
+      "end": 7894.13,
+      "speaker": "speaker_1"
+    },
+    {
+      "start": 7894.299,
+      "duration": 13.430999999999585,
+      "end": 7907.73,
+      "speaker": "speaker_3"
+    },
+    {
+      "start": 7945.66,
+      "duration": 77.91000000000076,
+      "end": 8023.570000000001,
+      "speaker": "claudiu_sandra"
+    },
+    {
+      "start": 8026.14,
+      "duration": 148.66999999999916,
+      "end": 8174.8099999999995,
+      "speaker": "speaker_5"
+    },
+    {
+      "start": 8174.96,
+      "duration": 68.44999999999982,
+      "end": 8243.41,
+      "speaker": "claudiu_sandra"
+    }
+  ],
+  "metrics": {
+    "segments": 164,
+    "speakers": 7,
+    "speech_sec": 4421.25,
+    "coverage_pct": 53.6
+  },
+  "unknown_speakers": {
+    "speaker_5": "gs://sermons-bucket/unknown_samples/Botez_speaker_5.wav",
+    "speaker_1": "gs://sermons-bucket/unknown_samples/Botez_speaker_1.wav",
+    "speaker_4": "gs://sermons-bucket/unknown_samples/Botez_speaker_4.wav",
+    "speaker_6": "gs://sermons-bucket/unknown_samples/Botez_speaker_6.wav",
+    "speaker_3": "gs://sermons-bucket/unknown_samples/Botez_speaker_3.wav"
+  }
+}
