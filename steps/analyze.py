@@ -50,7 +50,7 @@ Your task:
 - Combine both analyses to identify all SPEECH segments (sermons, speeches, testimonials).
 - EXCLUDE: music, songs, noEnergy.
 - For each speech segment, try to assign the speaker a meaningful label based on context
-  (e.g. "Predicator", "Traducator", "Marturie", or use the NeMo speaker ID if unknown).
+  (e.g. "Preacher", "Translator", "Testimony", or use the NeMo speaker ID if unknown).
 - Merge consecutive segments from the same speaker if the gap between them is small (< 10 seconds).
 - Times must be in seconds (float), not formatted strings.
 
@@ -61,7 +61,7 @@ Return ONLY a valid JSON array, no markdown, no explanation:
     "end": 456.7,
     "duration": 333.3,
     "speaker": "speaker_0",
-    "speaker_name": "Predicator",
+    "speaker_name": "Preacher",
     "label": "male"
   }}
 ]

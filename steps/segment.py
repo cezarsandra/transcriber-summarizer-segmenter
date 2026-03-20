@@ -39,16 +39,16 @@ def _convert_to_mp3(src: Path, dst: Path) -> None:
 def _write_text(seg: SpeechSegment, path: Path) -> None:
     speaker_display = seg.speaker_name or seg.speaker
     lines = [
-        f"Titlu: {seg.title}",
+        f"Title: {seg.title}",
         f"Speaker: {speaker_display}",
         f"Start: {seg.display_start}",
         f"End: {seg.display_end}",
-        f"Durata: {seg.display_duration}",
+        f"Duration: {seg.display_duration}",
         "",
-        "SUMAR:",
+        "SUMMARY:",
         seg.summary or "",
         "",
-        "TRANSCRIERE:",
+        "TRANSCRIPT:",
         seg.corrected_transcript or seg.transcript or "",
     ]
     path.write_text("\n".join(lines), encoding="utf-8")

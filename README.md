@@ -63,8 +63,10 @@ pip install torch
 **Python dependencies**
 
 ```bash
-pip install -r requirements.txt
+make install
 ```
+
+This creates `.venv/` and installs everything into it. All `make` commands use the venv automatically.
 
 ---
 
@@ -154,25 +156,25 @@ output/
 ├── clips/                   WAV clips extracted for Whisper, reused in Step 4
 │   ├── clip_000_0-754.wav
 │   └── clip_001_760-900.wav
-├── Predicator__Titlul_predicii.mp3
-├── Predicator__Titlul_predicii.txt
-├── Traducator__Alt_titlu.mp3
-└── Traducator__Alt_titlu.txt
+├── Preacher__Faith_and_Prayer.mp3
+├── Preacher__Faith_and_Prayer.txt
+├── Translator__Another_Title.mp3
+└── Translator__Another_Title.txt
 ```
 
 Each `.txt` file contains:
 ```
-Titlu: Credinta si rugaciunea
-Speaker: Predicator
+Title: Faith and Prayer
+Speaker: Preacher
 Start: 00:00:00
 End: 00:12:34
-Durata: 12m34s
+Duration: 12m34s
 
-SUMAR:
-Predicatorul a vorbit despre importanta rugaciunii...
+SUMMARY:
+The speaker addressed the importance of prayer...
 
-TRANSCRIERE:
-Text complet corectat...
+TRANSCRIPT:
+Full corrected transcript text...
 ```
 
 ---

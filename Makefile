@@ -1,15 +1,17 @@
-AUDIO        ?= audio.mp3
-INA          ?= ina.json
-NEMO         ?= nemo.json
-OUTPUT       ?= ./output
-WHISPER      ?= medium
-LANGUAGE     ?= ro
+AUDIO          ?= audio.mp3
+INA            ?= ina.json
+NEMO           ?= nemo.json
+OUTPUT         ?= ./output
+WHISPER        ?= medium
+LANGUAGE       ?= ro
 MIN_TRANSCRIBE ?= 60
-GEMINI_MODEL ?= gemini-2.0-flash
+GEMINI_MODEL   ?= gemini-2.0-flash
 
-PYTHON := python3
+VENV   := .venv
+PYTHON := $(VENV)/bin/python
+PIP    := $(VENV)/bin/pip
 
-.PHONY: help install run run-large clean clean-clips clean-all \
+.PHONY: help venv install run run-large clean clean-clips clean-all \
         skip-analyze skip-transcribe skip-summarize only-segment
 
 help:
@@ -20,7 +22,8 @@ help:
 	@echo "Usage:  make <target> [AUDIO=...] [INA=...] [NEMO=...] [OUTPUT=...]"
 	@echo ""
 	@echo "Setup:"
-	@echo "  install          Install Python dependencies"
+	@echo "  venv             Create virtual environment (.venv)"
+	@echo "  install          Install dependencies into .venv"
 	@echo ""
 	@echo "Run:"
 	@echo "  run              Full pipeline (Whisper medium)"
@@ -48,10 +51,15 @@ help:
 	@echo "  GEMINI_MODEL=$(GEMINI_MODEL)"
 	@echo ""
 
-install:
-	$(PYTHON) -m pip install -r requirements.txt
+venv:
+	python3 -m venv $(VENV)
+	@echo "Virtual environment created at $(VENV)/"
 
-run:
+install: venv
+	$(PIP) install --upgrade pip
+	$(PIP) install -r requirements.txt
+
+run: $(VENV)
 	$(PYTHON) pipeline.py \
 		--audio $(AUDIO) \
 		--ina $(INA) \
@@ -65,7 +73,7 @@ run:
 run-large:
 	$(MAKE) run WHISPER=large-v3
 
-skip-analyze:
+skip-analyze: $(VENV)
 	$(PYTHON) pipeline.py \
 		--audio $(AUDIO) \
 		--ina $(INA) \
@@ -77,7 +85,7 @@ skip-analyze:
 		--gemini-model $(GEMINI_MODEL) \
 		--skip-analyze
 
-skip-transcribe:
+skip-transcribe: $(VENV)
 	$(PYTHON) pipeline.py \
 		--audio $(AUDIO) \
 		--ina $(INA) \
@@ -87,7 +95,7 @@ skip-transcribe:
 		--skip-analyze \
 		--skip-transcribe
 
-skip-summarize:
+skip-summarize: $(VENV)
 	$(PYTHON) pipeline.py \
 		--audio $(AUDIO) \
 		--ina $(INA) \
@@ -108,3 +116,7 @@ clean-clips:
 
 clean-all:
 	rm -rf $(OUTPUT)
+
+$(VENV):
+	@echo "Run 'make install' first to create the virtual environment."
+	@exit 1

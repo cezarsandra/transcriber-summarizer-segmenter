@@ -14,7 +14,7 @@ Usage:
         --nemo nemo_output.json \\
         --output ./output \\
         --whisper-model medium \\
-        --min-duration 15 \\
+        --min-transcribe 60 \\
         --language ro
 
 Steps:
