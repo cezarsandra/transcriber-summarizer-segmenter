@@ -5,7 +5,7 @@ OUTPUT         ?= ./output
 WHISPER        ?= medium
 LANGUAGE       ?= ro
 MIN_TRANSCRIBE ?= 60
-GEMINI_MODEL   ?= gemini-2.0-flash
+GEMINI_MODEL   ?= gemini-2.5-flash
 
 VENV   := .venv
 PYTHON := $(VENV)/bin/python

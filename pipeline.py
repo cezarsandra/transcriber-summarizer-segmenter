@@ -77,8 +77,8 @@ def parse_args():
     )
     parser.add_argument(
         "--gemini-model",
-        default="gemini-2.0-flash",
-        help="Gemini model name (default: gemini-2.0-flash)",
+        default="gemini-2.5-flash",
+        help="Gemini model name (default: gemini-2.5-flash)",
     )
     parser.add_argument("--skip-analyze",    action="store_true", help="Skip Step 1, load from output/segments.json")
     parser.add_argument("--skip-transcribe", action="store_true", help="Skip Step 2, re-use existing transcripts")

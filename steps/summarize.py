@@ -17,7 +17,7 @@ from models import SpeechSegment
 def summarize(
     segments: list[SpeechSegment],
     api_key: str,
-    gemini_model: str = "gemini-2.0-flash",
+    gemini_model: str = "gemini-2.5-flash",
 ) -> list[SpeechSegment]:
     """
     Summarize and correct each segment's transcript using Gemini.

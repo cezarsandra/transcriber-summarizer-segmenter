@@ -25,7 +25,7 @@ def analyze(
     ina_json_path: Path,
     nemo_json_path: Path,
     api_key: str,
-    gemini_model: str = "gemini-2.0-flash",
+    gemini_model: str = "gemini-2.5-flash",
 ) -> list[SpeechSegment]:
     """
     Send both JSON files as text to Gemini and return all speech SpeechSegments.
