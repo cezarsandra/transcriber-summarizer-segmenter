@@ -43,6 +43,7 @@ def transcribe(
     model_name: str = "medium",
     language: Optional[str] = "ro",
     min_duration: float = 60.0,
+    device: Optional[str] = None,
 ) -> list[SpeechSegment]:
     """
     Transcribe speech segments with Whisper.
@@ -50,10 +51,12 @@ def transcribe(
     Skips segments shorter than min_duration seconds.
     Clips are saved to clips_dir for reuse by Step 4.
     Returns the same list — short segments are kept but have no transcript.
+    device: "cuda", "cpu", or None (auto-detect).
     """
     clips_dir.mkdir(parents=True, exist_ok=True)
 
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    if device is None:
+        device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"  Loading Whisper model '{model_name}' on {device}...")
     model = whisper.load_model(model_name, device=device)
 

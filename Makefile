@@ -6,6 +6,7 @@ WHISPER        ?= medium
 LANGUAGE       ?= ro
 MIN_TRANSCRIBE ?= 60
 GEMINI_MODEL   ?= gemini-2.5-flash
+DEVICE         ?=
 
 VENV   := .venv
 PYTHON := $(VENV)/bin/python
@@ -59,6 +60,8 @@ install: venv
 	$(PIP) install --upgrade pip
 	$(PIP) install -r requirements.txt
 
+_DEVICE_FLAG = $(if $(DEVICE),--device $(DEVICE),)
+
 run: $(VENV)
 	$(PYTHON) pipeline.py \
 		--audio $(AUDIO) \
@@ -68,7 +71,8 @@ run: $(VENV)
 		--whisper-model $(WHISPER) \
 		--language $(LANGUAGE) \
 		--min-transcribe $(MIN_TRANSCRIBE) \
-		--gemini-model $(GEMINI_MODEL)
+		--gemini-model $(GEMINI_MODEL) \
+		$(_DEVICE_FLAG)
 
 run-large:
 	$(MAKE) run WHISPER=large-v3
@@ -83,6 +87,7 @@ skip-analyze: $(VENV)
 		--language $(LANGUAGE) \
 		--min-transcribe $(MIN_TRANSCRIBE) \
 		--gemini-model $(GEMINI_MODEL) \
+		$(_DEVICE_FLAG) \
 		--skip-analyze
 
 skip-transcribe: $(VENV)

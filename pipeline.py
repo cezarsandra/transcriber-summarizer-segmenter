@@ -80,6 +80,12 @@ def parse_args():
         default="gemini-2.5-flash",
         help="Gemini model name (default: gemini-2.5-flash)",
     )
+    parser.add_argument(
+        "--device",
+        default=None,
+        choices=["cuda", "cpu"],
+        help="Device for Whisper: cuda or cpu (default: auto-detect)",
+    )
     parser.add_argument("--skip-analyze",    action="store_true", help="Skip Step 1, load from output/segments.json")
     parser.add_argument("--skip-transcribe", action="store_true", help="Skip Step 2, re-use existing transcripts")
     parser.add_argument("--skip-summarize",  action="store_true", help="Skip Step 3, re-use existing summaries")
@@ -119,6 +125,7 @@ def main():
     print(f"  Whisper model: {args.whisper_model}")
     print(f"  Language:      {args.language}")
     print(f"  Min transcribe: {args.min_transcribe}s")
+    print(f"  Device:         {args.device or 'auto'}")
     print(f"  Gemini model:  {args.gemini_model}")
     print("=" * 60)
 
@@ -162,6 +169,7 @@ def main():
             model_name=args.whisper_model,
             language=args.language,
             min_duration=args.min_transcribe,
+            device=args.device,
         )
         _save_segments(segments, segments_json)
     else:
