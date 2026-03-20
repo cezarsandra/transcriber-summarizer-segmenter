@@ -21,6 +21,71 @@ from google.genai import types
 from models import SpeechSegment
 
 
+SYSTEM_INSTRUCTION = """You are an expert audio structure analyst for evangelical religious services.
+
+Your role is to correlate two metadata sources from the same recording and produce a precise,
+clean table of contents of the service — identifying sermons, songs, and poetry.
+
+=== CLASSIFICATION RULES ===
+
+SERMON:
+- INA label is "male" or "female" continuously for more than 5 minutes
+- NeMo confirms a dominant speaker (same speaker ID) across that period
+- Short interruptions (< 30 seconds) from another speaker within a sermon block
+  are part of the same sermon (translation, amen, brief response) — do NOT split them
+- Merge consecutive sermon segments from the same speaker if the gap is < 60 seconds
+
+SONG:
+- INA label is "music" for more than 30 seconds
+- Do NOT include songs in the output — they are excluded
+
+POETRY:
+- A short "female" or "male" segment (< 5 minutes) surrounded by music segments
+- Include in the output with type "poetry"
+
+TESTIMONY / ANNOUNCEMENT:
+- A "male" or "female" segment between 1 and 5 minutes that does not qualify as a sermon
+- Include with type "speech"
+
+=== NOISE FILTER (CRITICAL) ===
+- Ignore ANY segment shorter than 5 seconds from both sources — these are echo artifacts
+- Ignore all "noEnergy" and "noise" labels entirely — treat them as silence
+
+=== OUTPUT FORMAT ===
+Return ONLY a valid JSON array. No markdown, no explanation, no commentary.
+Times must be in seconds as floats.
+
+[
+  {
+    "start": 123.4,
+    "end": 456.7,
+    "duration": 333.3,
+    "speaker": "speaker_0",
+    "speaker_name": "Preacher",
+    "label": "male",
+    "type": "sermon"
+  }
+]
+
+Valid types: "sermon", "speech", "poetry"
+"""
+
+USER_PROMPT = """Analyze the two metadata sources below and extract the service structure
+according to your system instructions.
+
+=== SOURCE 1: NVIDIA NEMO (SPEAKER DIARIZATION) ===
+{nemo_json}
+
+=== SOURCE 2: INASPEECH (AUDIO SEGMENTATION) ===
+{ina_json}
+
+=== REQUIREMENT ===
+Generate the final list of events (Sermons, Speeches, Poetry).
+Timestamps must be in seconds (float). Calculate the real duration for each.
+Be aggressive about merging — a sermon with brief pauses is still one sermon.
+"""
+
+
 def analyze(
     ina_json_path: Path,
     nemo_json_path: Path,
@@ -36,42 +101,17 @@ def analyze(
     ina_data = json.loads(ina_json_path.read_text())
     nemo_data = json.loads(nemo_json_path.read_text())
 
-    prompt = f"""You are an assistant that analyzes religious service recordings.
-
-You have two analyses of the same audio file:
-
-1. INA Speech Segmenter output (identifies music vs speech, labels: male/female/music/poetry/noEnergy):
-{json.dumps(ina_data, ensure_ascii=False, indent=2)}
-
-2. NeMo Speaker Diarization output (identifies who speaks when, with speaker IDs):
-{json.dumps(nemo_data, ensure_ascii=False, indent=2)}
-
-Your task:
-- Combine both analyses to identify all SPEECH segments (sermons, speeches, testimonials).
-- EXCLUDE: music, songs, noEnergy.
-- For each speech segment, try to assign the speaker a meaningful label based on context
-  (e.g. "Preacher", "Translator", "Testimony", or use the NeMo speaker ID if unknown).
-- Merge consecutive segments from the same speaker if the gap between them is small (< 10 seconds).
-- Times must be in seconds (float), not formatted strings.
-
-Return ONLY a valid JSON array, no markdown, no explanation:
-[
-  {{
-    "start": 123.4,
-    "end": 456.7,
-    "duration": 333.3,
-    "speaker": "speaker_0",
-    "speaker_name": "Preacher",
-    "label": "male"
-  }}
-]
-"""
+    prompt = USER_PROMPT.format(
+        nemo_json=json.dumps(nemo_data, ensure_ascii=False, indent=2),
+        ina_json=json.dumps(ina_data, ensure_ascii=False, indent=2),
+    )
 
     print(f"  Calling Gemini ({gemini_model}) for segment analysis...")
     response = client.models.generate_content(
         model=gemini_model,
         contents=prompt,
         config=types.GenerateContentConfig(
+            system_instruction=SYSTEM_INSTRUCTION,
             response_mime_type="application/json",
         ),
     )
