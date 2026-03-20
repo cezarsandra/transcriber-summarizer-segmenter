@@ -2,8 +2,8 @@
 Step 1 — Gemini analysis.
 
 Sends only the two JSON files (INA Speech Segmenter + NeMo diarization) as
-text to Gemini and asks it to produce a clean, merged list of speech segments
-(no music, no very-short segments). No audio is uploaded.
+text to Gemini and asks it to produce a clean, merged list of speech segments.
+No audio is uploaded.
 
 INA JSON schema expected:
   {"segments": [{"start": "hh:mm:ss:ms", "end": "hh:mm:ss:ms", "label": "male|female|music|poetry"}, ...]}
@@ -24,35 +24,31 @@ from models import SpeechSegment
 SYSTEM_INSTRUCTION = """You are an expert audio structure analyst for evangelical religious services.
 
 Your role is to correlate two metadata sources from the same recording and produce a precise,
-clean table of contents of the service — identifying sermons, songs, and poetry.
+clean table of contents of the service.
 
-=== CLASSIFICATION RULES ===
+Follow these steps exactly:
 
-SERMON:
-- INA label is "male" or "female" continuously for more than 5 minutes
-- NeMo confirms a dominant speaker (same speaker ID) across that period
-- Short interruptions (< 30 seconds) from another speaker within a sermon block
-  are part of the same sermon (translation, amen, brief response) — do NOT split them
-- Merge consecutive sermon segments from the same speaker if the gap is < 60 seconds
+=== STEP 1: Establish Anchors (INA Speech Segmenter) ===
+Identify continuous Male/Female voice blocks from the INA source.
+IF a voice block is longer than 300 seconds (5 minutes), it is MANDATORY a SERMON.
+Do NOT split it into smaller pieces even if the speaker briefly changes inside it.
 
-SONG:
-- INA label is "music" for more than 30 seconds
-- Do NOT include songs in the output — they are excluded
+=== STEP 2: Overlay with NeMo ===
+For each Anchor found in Step 1, look at the NeMo source and identify which speaker
+has the most seconds within that time interval.
+Assign the entire block duration to that dominant speaker.
 
-POETRY:
-- A short "female" or "male" segment (< 5 minutes) surrounded by music segments
-- Include in the output with type "poetry"
+=== STEP 3: Noise Filter (Golden Rule) ===
+FORBIDDEN: Do not include any row in the final result with duration under 60 seconds,
+EXCEPT if it is marked as Poetry.
+Ignore all "noise" segments and any pause under 1 second from both sources.
 
-TESTIMONY / ANNOUNCEMENT:
-- A "male" or "female" segment between 1 and 5 minutes that does not qualify as a sermon
-- Include with type "speech"
-
-=== NOISE FILTER (CRITICAL) ===
-- Ignore ANY segment shorter than 5 seconds from both sources — these are echo artifacts
-- Ignore all "noEnergy" and "noise" labels entirely — treat them as silence
+=== STEP 4: Songs ===
+Any "music" segment from INA longer than 45 seconds becomes a "song".
+Songs are included in the output with type "song".
 
 === OUTPUT FORMAT ===
-Return ONLY a valid JSON array. No markdown, no explanation, no commentary.
+Return ONLY a valid JSON array. No markdown, no explanation.
 Times must be in seconds as floats.
 
 [
@@ -67,22 +63,20 @@ Times must be in seconds as floats.
   }
 ]
 
-Valid types: "sermon", "speech", "poetry"
+Valid types: "sermon", "speech", "poetry", "song"
 """
 
-USER_PROMPT = """Analyze the two metadata sources below and extract the service structure
-according to your system instructions.
+USER_PROMPT = """[INPUT_DATA]
+{{
+  "source_inaspeech": {ina_json},
+  "source_nemo": {nemo_json}
+}}
 
-=== SOURCE 1: NVIDIA NEMO (SPEAKER DIARIZATION) ===
-{nemo_json}
-
-=== SOURCE 2: INASPEECH (AUDIO SEGMENTATION) ===
-{ina_json}
-
-=== REQUIREMENT ===
-Generate the final list of events (Sermons, Speeches, Poetry).
-Timestamps must be in seconds (float). Calculate the real duration for each.
-Be aggressive about merging — a sermon with brief pauses is still one sermon.
+[TASK]
+Correlate the data following your system instructions.
+Apply all 4 steps in order.
+Return only SERMONS (over 5 min), SONGS (music over 45s), and POETRY.
+Ignore all short diarization residues of a few seconds.
 """
 
 
@@ -102,8 +96,8 @@ def analyze(
     nemo_data = json.loads(nemo_json_path.read_text())
 
     prompt = USER_PROMPT.format(
-        nemo_json=json.dumps(nemo_data, ensure_ascii=False, indent=2),
         ina_json=json.dumps(ina_data, ensure_ascii=False, indent=2),
+        nemo_json=json.dumps(nemo_data, ensure_ascii=False, indent=2),
     )
 
     print(f"  Calling Gemini ({gemini_model}) for segment analysis...")
@@ -126,12 +120,12 @@ def analyze(
             end=float(item["end"]),
             duration=dur,
             speaker=item.get("speaker", "unknown"),
-            label=item.get("label", "unknown"),
+            label=item.get("label", item.get("type", "unknown")),
         )
         if item.get("speaker_name"):
             seg.speaker_name = item["speaker_name"]
         segments.append(seg)
 
     segments.sort(key=lambda s: s.start)
-    print(f"  Found {len(segments)} speech segment(s) after filtering.")
+    print(f"  Found {len(segments)} segment(s) after analysis.")
     return segments
