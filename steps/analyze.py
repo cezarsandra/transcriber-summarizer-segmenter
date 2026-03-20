@@ -3,7 +3,7 @@ Step 1 — Gemini analysis.
 
 Sends only the two JSON files (INA Speech Segmenter + NeMo diarization) as
 text to Gemini and asks it to produce a clean, merged list of speech segments.
-No audio is uploaded.
+Songs are excluded. No audio is uploaded.
 
 INA JSON schema expected:
   {"segments": [{"start": "hh:mm:ss:ms", "end": "hh:mm:ss:ms", "label": "male|female|music|poetry"}, ...]}
@@ -21,62 +21,62 @@ from google.genai import types
 from models import SpeechSegment
 
 
-SYSTEM_INSTRUCTION = """You are an expert audio structure analyst for evangelical religious services.
+SYSTEM_INSTRUCTION = """ROLE: You are an expert in audio/video editing for religious content. Your task is to transform raw diarization data (NeMo) and segmentation data (INA Speech Segmenter) into a logical table of contents for a Christian service.
 
-Your role is to correlate two metadata sources from the same recording and produce a precise,
-clean table of contents of the service.
+EVENT CONTEXT:
+A service is made up of large blocks. People do not speak in 2-second bursts; if a speaker is active, they have a message to deliver (sermon, exhortation, or poetry reading).
 
-Follow these steps exactly:
+LOGIC RULES (Strict):
 
-=== STEP 1: Establish Anchors (INA Speech Segmenter) ===
-Identify continuous Male/Female voice blocks from the INA source.
-IF a voice block is longer than 300 seconds (5 minutes), it is MANDATORY a SERMON.
-Do NOT split it into smaller pieces even if the speaker briefly changes inside it.
+1. Status Priority: If INA Speech Segmenter indicates "music" on a long segment, ignore any speaker identified by NeMo there. Do NOT include songs or music in the output — they are excluded entirely.
 
-=== STEP 2: Overlay with NeMo ===
-For each Anchor found in Step 1, look at the NeMo source and identify which speaker
-has the most seconds within that time interval.
-Assign the entire block duration to that dominant speaker.
+2. Aggregation (Smoothing): If speaker_x speaks, stops for 10 seconds (pause/noise) and continues as the same speaker, merge everything into a single event. Do not cut a speech!
 
-=== STEP 3: Noise Filter (Golden Rule) ===
-FORBIDDEN: Do not include any row in the final result with duration under 60 seconds,
-EXCEPT if it is marked as Poetry.
-Ignore all "noise" segments and any pause under 1 second from both sources.
+3. Relevance Threshold:
+   - Over 5 minutes of voice = Sermon
+   - Between 1 and 5 minutes of voice = Exhortation / Poetry
+   - Under 1 minute = Background noise / Amens / Reactions -> IGNORE COMPLETELY
 
-=== STEP 4: Songs ===
-Any "music" segment from INA longer than 45 seconds becomes a "song".
-Songs are included in the output with type "song".
+4. Speaker Names: Use known speaker names if available (e.g. "Claudiu Sandra", "Cezar Sandra"), otherwise use "Brother/Speaker [ID]".
 
-=== OUTPUT FORMAT ===
+OUTPUT FORMAT:
 Return ONLY a valid JSON array. No markdown, no explanation.
 Times must be in seconds as floats.
 
 [
   {
-    "start": 123.4,
-    "end": 456.7,
-    "duration": 333.3,
+    "start": 192.0,
+    "end": 782.0,
+    "duration": 590.0,
     "speaker": "speaker_0",
-    "speaker_name": "Preacher",
+    "speaker_name": "Claudiu Sandra",
     "label": "male",
     "type": "sermon"
   }
 ]
 
-Valid types: "sermon", "speech", "poetry", "song"
+Valid types: "sermon", "exhortation", "poetry"
+Songs and music are NOT included in the output.
 """
 
-USER_PROMPT = """[INPUT_DATA]
-{{
-  "source_inaspeech": {ina_json},
-  "source_nemo": {nemo_json}
-}}
+USER_PROMPT = """### CONTEXT
+Analyze the data below from a religious service recording.
+Your goal is to clean the "noise" and give me only the main spoken events (table of contents).
 
-[TASK]
-Correlate the data following your system instructions.
-Apply all 4 steps in order.
-Return only SERMONS (over 5 min), SONGS (music over 45s), and POETRY.
-Ignore all short diarization residues of a few seconds.
+### RAW DATA
+
+[SOURCE 1 - NVIDIA NEMO]:
+{nemo_json}
+
+[SOURCE 2 - INASPEECH]:
+{ina_json}
+
+### SPECIFIC TASK
+1. Ignore "unknown" or unlabeled segments if they are short (under 2 minutes).
+2. If you see a known speaker talking for more than 5 minutes, create a "sermon" row.
+3. Ignore songs and music entirely — do not include them in the output.
+4. Apply the smoothing rule: merge same-speaker blocks separated by less than 60 seconds.
+5. Return only spoken events: sermons, exhortations, poetry.
 """
 
 
@@ -88,7 +88,7 @@ def analyze(
 ) -> list[SpeechSegment]:
     """
     Send both JSON files as text to Gemini and return all speech SpeechSegments.
-    Duration filtering happens later in the transcribe step.
+    Songs and music are excluded. Duration filtering happens in the transcribe step.
     """
     client = genai.Client(api_key=api_key)
 
@@ -127,5 +127,5 @@ def analyze(
         segments.append(seg)
 
     segments.sort(key=lambda s: s.start)
-    print(f"  Found {len(segments)} segment(s) after analysis.")
+    print(f"  Found {len(segments)} speech segment(s) after analysis.")
     return segments
