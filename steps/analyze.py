@@ -37,7 +37,15 @@ LOGIC RULES (Strict):
    - Between 1 and 5 minutes of voice = Exhortation / Poetry
    - Under 1 minute = Background noise / Amens / Reactions -> IGNORE COMPLETELY
 
-4. Speaker Names: Use known speaker names if available (e.g. "Claudiu Sandra", "Cezar Sandra"), otherwise use "Brother/Speaker [ID]".
+4. Overlap Resolution: If two segments overlap in time, keep only one:
+   - Prefer the segment from INA Speech Segmenter labeled "male" or "female"
+   - If both are from the same source, keep the one with the longer duration
+   - The final output must have zero overlapping time intervals
+
+5. Speaker Names (MANDATORY): If the NeMo source already contains a real name for a speaker
+   (e.g. "claudiu_sandra", "cezar_sandra"), you MUST use that name in the output.
+   Never replace a known name with a generic ID. Ignoring a provided name is a critical error.
+   Only use "Brother/Speaker [ID]" if no name is available in the source data.
 
 OUTPUT FORMAT:
 Return ONLY a valid JSON array. No markdown, no explanation.
