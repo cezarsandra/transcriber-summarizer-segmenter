@@ -10,10 +10,16 @@ python-dotenv
 # Audio (system dependency: ffmpeg must be installed separately)
 # Install with: apt install ffmpeg  OR  brew install ffmpeg
 
-# PyTorch with CUDA — install manually based on your CUDA version:
-# https://pytorch.org/get-started/locally/
-# Example for CUDA 12.1:
-#   pip install torch --index-url https://download.pytorch.org/whl/cu121
-# For CPU only:
-#   pip install torch
+# PyTorch — choose ONE of the following and run it manually BEFORE `make install`:
+#
+#   GTX 1070 / Pascal (sm_61) — CUDA 11.8 build (works with driver 12.x):
+#     pip install torch --index-url https://download.pytorch.org/whl/cu118
+#
+#   Ampere / Ada / Hopper (RTX 30xx, 40xx, A100) — CUDA 12.1:
+#     pip install torch --index-url https://download.pytorch.org/whl/cu121
+#
+#   CPU only:
+#     pip install torch
+#
+# After installing torch manually, run: make install
 torch

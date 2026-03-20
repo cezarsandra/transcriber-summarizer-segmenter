@@ -60,6 +60,18 @@ install: venv
 	$(PIP) install --upgrade pip
 	$(PIP) install -r requirements.txt
 
+# GTX 1070 / Pascal (sm_61) — CUDA 11.8 build, compatible with driver 12.x
+install-pascal: venv
+	$(PIP) install --upgrade pip
+	$(PIP) install torch --index-url https://download.pytorch.org/whl/cu118
+	$(PIP) install -r requirements.txt
+
+# RTX 30xx / 40xx / A100 — CUDA 12.1
+install-ampere: venv
+	$(PIP) install --upgrade pip
+	$(PIP) install torch --index-url https://download.pytorch.org/whl/cu121
+	$(PIP) install -r requirements.txt
+
 _DEVICE_FLAG = $(if $(DEVICE),--device $(DEVICE),)
 
 run: $(VENV)
