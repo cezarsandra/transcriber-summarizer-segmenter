@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import Literal
 
 from models import SpeechSegment
-from utils.llm import call_gemini, call_runpod
+from utils.llm import call_gemini, call_runpod, clean_json_response
 
 
 SYSTEM_INSTRUCTION = """ROLE: You are an expert in audio/video editing for religious content. Your task is to transform raw diarization data (NeMo) and segmentation data (INA Speech Segmenter) into a logical table of contents for a Christian service.
@@ -121,7 +121,7 @@ def analyze(
     else:
         text = call_gemini(prompt, system_instruction=SYSTEM_INSTRUCTION, api_key=api_key, model=gemini_model)
 
-    raw = json.loads(text)
+    raw = json.loads(clean_json_response(text))
 
     segments = []
     for item in raw:

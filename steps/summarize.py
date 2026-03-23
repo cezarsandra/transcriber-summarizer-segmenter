@@ -13,7 +13,7 @@ import json
 from typing import Literal
 
 from models import SpeechSegment
-from utils.llm import call_gemini, call_runpod
+from utils.llm import call_gemini, call_runpod, clean_json_response
 
 
 SYSTEM_INSTRUCTION = """You are an assistant that processes religious sermon transcripts."""
@@ -82,7 +82,7 @@ def summarize(
     else:
         text = call_gemini(prompt, system_instruction=SYSTEM_INSTRUCTION, api_key=api_key, model=gemini_model)
 
-    results = json.loads(text)
+    results = json.loads(clean_json_response(text))
     # Handle {"segments": [...]} vs plain [...]
     if isinstance(results, dict):
         results = next(iter(results.values()))

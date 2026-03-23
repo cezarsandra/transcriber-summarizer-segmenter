@@ -71,6 +71,23 @@ def call_runpod(
         time.sleep(3)
 
 
+def clean_json_response(text: str) -> str:
+    """Strip markdown code fences and leading/trailing noise from an LLM JSON response."""
+    import re
+    # Remove ```json ... ``` or ``` ... ```
+    text = re.sub(r"```(?:json)?\s*", "", text)
+    text = text.replace("```", "")
+    # Find first [ or { and last ] or }
+    first = min(
+        (text.find(c) for c in ("[", "{") if text.find(c) != -1),
+        default=-1,
+    )
+    last = max(text.rfind("]"), text.rfind("}"))
+    if first != -1 and last != -1 and last > first:
+        text = text[first : last + 1]
+    return text.strip()
+
+
 def _extract_text(output) -> str:
     """Extract response text from various RunPod output shapes."""
     if isinstance(output, str):
