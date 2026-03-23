@@ -82,6 +82,7 @@ def summarize(
     else:
         text = call_gemini(prompt, system_instruction=SYSTEM_INSTRUCTION, api_key=api_key, model=gemini_model)
 
+    print(f"  Raw response (first 500 chars):\n{text[:500]}")
     results = json.loads(clean_json_response(text))
     # Handle {"segments": [...]} vs plain [...]
     if isinstance(results, dict):
