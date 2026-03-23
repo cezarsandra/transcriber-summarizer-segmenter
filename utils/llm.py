@@ -92,20 +92,31 @@ def _extract_text(output) -> str:
     """Extract response text from various RunPod output shapes."""
     if isinstance(output, str):
         return output
-    # OpenAI-style: {"choices": [{"message": {"content": "..."}}]}
+
     if isinstance(output, dict):
         choices = output.get("choices")
-        if choices:
-            return choices[0].get("message", {}).get("content", "") or choices[0].get("text", "")
+        if choices and isinstance(choices, list):
+            choice = choices[0]
+            # vLLM token list: {"choices": [{"tokens": ["...", "...", ...]}]}
+            tokens = choice.get("tokens")
+            if tokens and isinstance(tokens, list):
+                return "".join(tokens)
+            # OpenAI-style: {"choices": [{"message": {"content": "..."}}]}
+            content = choice.get("message", {}).get("content")
+            if content:
+                return content
+            # Plain text field
+            return choice.get("text", "") or choice.get("content", "")
         if "text" in output:
             return output["text"]
         if "content" in output:
             return output["content"]
-    # List of choices
+
     if isinstance(output, list) and output:
         first = output[0]
         if isinstance(first, dict):
             return first.get("text", "") or first.get("content", "") or str(first)
+
     return str(output)
 
 
