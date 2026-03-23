@@ -60,6 +60,14 @@ Please return a valid JSON object (no markdown, no explanation):
             ),
         )
 
+        if not response.text:
+            finish = getattr(response.candidates[0], "finish_reason", "unknown") if response.candidates else "no candidates"
+            print(f"    Warning: empty response from Gemini (finish_reason={finish}), skipping summarization for this segment.")
+            seg.title = f"Segment {i+1}"
+            seg.summary = ""
+            seg.corrected_transcript = seg.transcript
+            continue
+
         result = json.loads(response.text)
         seg.title = result.get("title", f"Segment {i+1}")
         seg.summary = result.get("summary", "")
