@@ -1,50 +1,24 @@
 """
-Step 3 — Gemini summarization.
+Step 3 — Summarization.
 
-Sends ALL transcripts in a single API call.
-Gemini returns a JSON array with title, summary, corrected transcript
-and speaker name for each segment.
+Sends ALL transcripts in a single API call and gets back title, summary,
+corrected transcript, and speaker name for each segment.
+
+Supports two backends:
+  - gemini  : Google Gemini API (default)
+  - runpod  : RunPod serverless worker
 """
 
 import json
-
-from google import genai
-from google.genai import types
+from typing import Literal
 
 from models import SpeechSegment
+from utils.llm import call_gemini, call_runpod
 
 
-def summarize(
-    segments: list[SpeechSegment],
-    api_key: str,
-    gemini_model: str = "gemini-2.5-flash",
-) -> list[SpeechSegment]:
-    """
-    Summarize all transcribed segments in a single Gemini call.
-    Segments without a transcript are skipped and returned unchanged.
-    """
-    client = genai.Client(api_key=api_key)
+SYSTEM_INSTRUCTION = """You are an assistant that processes religious sermon transcripts."""
 
-    to_process = [(i, seg) for i, seg in enumerate(segments) if seg.transcript]
-
-    if not to_process:
-        print("  No transcripts to summarize.")
-        return segments
-
-    print(f"  Sending {len(to_process)} transcript(s) to Gemini in one call...")
-
-    segments_payload = []
-    for idx, (i, seg) in enumerate(to_process):
-        segments_payload.append({
-            "index": idx,
-            "speaker": seg.speaker_name or seg.speaker,
-            "duration": seg.display_duration,
-            "transcript": seg.transcript,
-        })
-
-    prompt = f"""You are an assistant that processes religious sermon transcripts.
-
-Below is a JSON array of speech segments from a single service recording.
+PROMPT_TEMPLATE = """Below is a JSON array of speech segments from a single service recording.
 Each segment has an index, speaker name, duration, and raw transcript.
 
 For EACH segment return a JSON object with:
@@ -57,30 +31,68 @@ For EACH segment return a JSON object with:
 Return ONLY a valid JSON array with one object per input segment, no markdown, no explanation.
 
 INPUT:
-{json.dumps(segments_payload, ensure_ascii=False, indent=2)}
+{payload}
 """
 
-    response = client.models.generate_content(
-        model=gemini_model,
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            response_mime_type="application/json",
-        ),
-    )
 
-    if not response.text:
-        finish = getattr(response.candidates[0], "finish_reason", "unknown") if response.candidates else "no candidates"
-        print(f"  Warning: empty response from Gemini (finish_reason={finish}). Skipping summarization.")
+def summarize(
+    segments: list[SpeechSegment],
+    api_key: str,
+    gemini_model: str = "gemini-2.5-flash",
+    backend: Literal["gemini", "runpod"] = "gemini",
+    runpod_url: str = "",
+    runpod_api_key: str = "",
+) -> list[SpeechSegment]:
+    """
+    Summarize all transcribed segments in a single API call.
+
+    backend="gemini"  — uses Gemini API
+    backend="runpod"  — uses RunPod serverless worker
+    """
+    to_process = [(i, seg) for i, seg in enumerate(segments) if seg.transcript]
+
+    if not to_process:
+        print("  No transcripts to summarize.")
         return segments
 
-    results = json.loads(response.text)
+    print(f"  Sending {len(to_process)} transcript(s) to {backend} in one call...")
+
+    payload = [
+        {
+            "index": idx,
+            "speaker": seg.speaker_name or seg.speaker,
+            "duration": seg.display_duration,
+            "transcript": seg.transcript,
+        }
+        for idx, (_, seg) in enumerate(to_process)
+    ]
+
+    prompt = PROMPT_TEMPLATE.format(
+        payload=json.dumps(payload, ensure_ascii=False, indent=2)
+    )
+
+    if backend == "runpod":
+        if not runpod_url or not runpod_api_key:
+            raise ValueError("--runpod-url and --runpod-api-key are required when using --summarize-with runpod")
+        messages = [
+            {"role": "system", "content": SYSTEM_INSTRUCTION},
+            {"role": "user", "content": prompt},
+        ]
+        text = call_runpod(messages, endpoint_url=runpod_url, api_key=runpod_api_key)
+    else:
+        text = call_gemini(prompt, system_instruction=SYSTEM_INSTRUCTION, api_key=api_key, model=gemini_model)
+
+    results = json.loads(text)
+    # Handle {"segments": [...]} vs plain [...]
+    if isinstance(results, dict):
+        results = next(iter(results.values()))
 
     results_by_index = {r["index"]: r for r in results}
 
     for idx, (i, seg) in enumerate(to_process):
         result = results_by_index.get(idx)
         if not result:
-            print(f"  Warning: no result returned for segment {i+1}, keeping raw transcript.")
+            print(f"  Warning: no result for segment {i+1}, keeping raw transcript.")
             seg.title = f"Segment {i+1}"
             seg.corrected_transcript = seg.transcript
             continue

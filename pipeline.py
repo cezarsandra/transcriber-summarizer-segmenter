@@ -86,6 +86,28 @@ def parse_args():
         choices=["cuda", "cpu"],
         help="Device for Whisper: cuda or cpu (default: auto-detect)",
     )
+    parser.add_argument(
+        "--analyze-with",
+        default="gemini",
+        choices=["gemini", "runpod"],
+        help="Backend for Step 1 analysis: gemini or runpod (default: gemini)",
+    )
+    parser.add_argument(
+        "--summarize-with",
+        default="gemini",
+        choices=["gemini", "runpod"],
+        help="Backend for Step 3 summarization: gemini or runpod (default: gemini)",
+    )
+    parser.add_argument(
+        "--runpod-url",
+        default="",
+        help="RunPod endpoint URL, e.g. https://api.runpod.ai/v2/<endpoint-id>/run",
+    )
+    parser.add_argument(
+        "--runpod-api-key",
+        default="",
+        help="RunPod API key (or set RUNPOD_API_KEY env var)",
+    )
     parser.add_argument("--skip-analyze",    action="store_true", help="Skip Step 1, load from output/segments.json")
     parser.add_argument("--skip-transcribe", action="store_true", help="Skip Step 2, re-use existing transcripts")
     parser.add_argument("--skip-summarize",  action="store_true", help="Skip Step 3, re-use existing summaries")
@@ -107,8 +129,13 @@ def main():
             sys.exit(1)
 
     api_key = os.environ.get("GEMINI_API_KEY", "")
-    if not api_key:
+    if not api_key and (args.analyze_with == "gemini" or args.summarize_with == "gemini"):
         print("Error: GEMINI_API_KEY not set in environment or .env file", file=sys.stderr)
+        sys.exit(1)
+
+    runpod_api_key = args.runpod_api_key or os.environ.get("RUNPOD_API_KEY", "")
+    if not runpod_api_key and (args.analyze_with == "runpod" or args.summarize_with == "runpod"):
+        print("Error: --runpod-api-key or RUNPOD_API_KEY not set", file=sys.stderr)
         sys.exit(1)
 
     from steps.analyze import analyze
@@ -142,6 +169,9 @@ def main():
             nemo_json_path=nemo_path,
             api_key=api_key,
             gemini_model=args.gemini_model,
+            backend=args.analyze_with,
+            runpod_url=args.runpod_url,
+            runpod_api_key=runpod_api_key,
         )
         _save_segments(segments, segments_json)
         print(f"  Saved to {segments_json}")
@@ -184,6 +214,9 @@ def main():
             segments=segments,
             api_key=api_key,
             gemini_model=args.gemini_model,
+            backend=args.summarize_with,
+            runpod_url=args.runpod_url,
+            runpod_api_key=runpod_api_key,
         )
         _save_segments(segments, segments_json)
     else:

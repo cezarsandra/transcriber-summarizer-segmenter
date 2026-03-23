@@ -14,11 +14,10 @@ NeMo JSON schema expected:
 
 import json
 from pathlib import Path
-
-from google import genai
-from google.genai import types
+from typing import Literal
 
 from models import SpeechSegment
+from utils.llm import call_gemini, call_runpod
 
 
 SYSTEM_INSTRUCTION = """ROLE: You are an expert in audio/video editing for religious content. Your task is to transform raw diarization data (NeMo) and segmentation data (INA Speech Segmenter) into a logical table of contents for a Christian service.
@@ -93,13 +92,14 @@ def analyze(
     nemo_json_path: Path,
     api_key: str,
     gemini_model: str = "gemini-2.5-flash",
+    backend: Literal["gemini", "runpod"] = "gemini",
+    runpod_url: str = "",
+    runpod_api_key: str = "",
 ) -> list[SpeechSegment]:
     """
-    Send both JSON files as text to Gemini and return all speech SpeechSegments.
+    Send both JSON files as text to the chosen LLM backend and return SpeechSegments.
     Songs and music are excluded. Duration filtering happens in the transcribe step.
     """
-    client = genai.Client(api_key=api_key)
-
     ina_data = json.loads(ina_json_path.read_text())
     nemo_data = json.loads(nemo_json_path.read_text())
 
@@ -108,17 +108,20 @@ def analyze(
         nemo_json=json.dumps(nemo_data, ensure_ascii=False, indent=2),
     )
 
-    print(f"  Calling Gemini ({gemini_model}) for segment analysis...")
-    response = client.models.generate_content(
-        model=gemini_model,
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            system_instruction=SYSTEM_INSTRUCTION,
-            response_mime_type="application/json",
-        ),
-    )
+    print(f"  Calling {backend} for segment analysis...")
 
-    raw = json.loads(response.text)
+    if backend == "runpod":
+        if not runpod_url or not runpod_api_key:
+            raise ValueError("--runpod-url and --runpod-api-key are required when using --analyze-with runpod")
+        messages = [
+            {"role": "system", "content": SYSTEM_INSTRUCTION},
+            {"role": "user", "content": prompt},
+        ]
+        text = call_runpod(messages, endpoint_url=runpod_url, api_key=runpod_api_key)
+    else:
+        text = call_gemini(prompt, system_instruction=SYSTEM_INSTRUCTION, api_key=api_key, model=gemini_model)
+
+    raw = json.loads(text)
 
     segments = []
     for item in raw:

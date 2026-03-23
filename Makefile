@@ -7,6 +7,10 @@ LANGUAGE       ?= ro
 MIN_TRANSCRIBE ?= 60
 GEMINI_MODEL   ?= gemini-2.5-flash
 DEVICE         ?=
+ANALYZE_WITH   ?= gemini
+SUMMARIZE_WITH ?= gemini
+RUNPOD_URL     ?=
+RUNPOD_API_KEY ?=
 
 VENV   := .venv
 PYTHON := $(VENV)/bin/python
@@ -72,7 +76,8 @@ install-ampere: venv
 	$(PIP) install torch --index-url https://download.pytorch.org/whl/cu121
 	$(PIP) install -r requirements.txt
 
-_DEVICE_FLAG = $(if $(DEVICE),--device $(DEVICE),)
+_DEVICE_FLAG     = $(if $(DEVICE),--device $(DEVICE),)
+_RUNPOD_FLAGS    = $(if $(RUNPOD_URL),--runpod-url $(RUNPOD_URL) --runpod-api-key $(RUNPOD_API_KEY),)
 
 run: $(VENV)
 	$(PYTHON) pipeline.py \
@@ -84,6 +89,9 @@ run: $(VENV)
 		--language $(LANGUAGE) \
 		--min-transcribe $(MIN_TRANSCRIBE) \
 		--gemini-model $(GEMINI_MODEL) \
+		--analyze-with $(ANALYZE_WITH) \
+		--summarize-with $(SUMMARIZE_WITH) \
+		$(_RUNPOD_FLAGS) \
 		$(_DEVICE_FLAG)
 
 run-large:
@@ -99,6 +107,9 @@ skip-analyze: $(VENV)
 		--language $(LANGUAGE) \
 		--min-transcribe $(MIN_TRANSCRIBE) \
 		--gemini-model $(GEMINI_MODEL) \
+		--analyze-with $(ANALYZE_WITH) \
+		--summarize-with $(SUMMARIZE_WITH) \
+		$(_RUNPOD_FLAGS) \
 		$(_DEVICE_FLAG) \
 		--skip-analyze
 

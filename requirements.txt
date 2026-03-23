@@ -4,6 +4,12 @@ openai-whisper
 # Gemini
 google-genai
 
+# RunPod serverless client
+requests
+
+# OpenAI-compatible client (kept for direct vLLM/Ollama endpoints)
+openai
+
 # Environment
 python-dotenv
 
