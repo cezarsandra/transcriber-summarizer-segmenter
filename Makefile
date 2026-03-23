@@ -120,6 +120,8 @@ skip-transcribe: $(VENV)
 		--nemo $(NEMO) \
 		--output $(OUTPUT) \
 		--gemini-model $(GEMINI_MODEL) \
+		--summarize-with $(SUMMARIZE_WITH) \
+		$(_RUNPOD_FLAGS) \
 		--skip-analyze \
 		--skip-transcribe
 
