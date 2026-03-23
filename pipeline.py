@@ -197,6 +197,7 @@ def main():
         segments=segments,
         output_dir=output_dir,
     )
+    _save_segments(segments, segments_json)
 
     # -------------------------------------------------------------------------
     # Summary
@@ -204,6 +205,7 @@ def main():
     print("\n" + "=" * 60)
     print("DONE")
     print(f"Output: {output_dir.resolve()}")
+    print(f"Manifest: {segments_json.resolve()}")
     for s in segments:
         print(f"\n  [{s.display_start} → {s.display_end}]  ({s.display_duration})")
         print(f"    Speaker : {s.speaker_name or s.speaker}")

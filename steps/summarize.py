@@ -1,9 +1,9 @@
 """
 Step 3 — Gemini summarization.
 
-For each SpeechSegment that has a transcript:
-  - Send the raw transcript to Gemini
-  - Get back: title, summary (3-5 sentences), corrected transcript, speaker name
+Sends ALL transcripts in a single API call.
+Gemini returns a JSON array with title, summary, corrected transcript
+and speaker name for each segment.
 """
 
 import json
@@ -20,61 +20,77 @@ def summarize(
     gemini_model: str = "gemini-2.5-flash",
 ) -> list[SpeechSegment]:
     """
-    Summarize and correct each segment's transcript using Gemini.
-    Returns the same list with title/summary/corrected_transcript filled in.
+    Summarize all transcribed segments in a single Gemini call.
+    Segments without a transcript are skipped and returned unchanged.
     """
     client = genai.Client(api_key=api_key)
 
-    for i, seg in enumerate(segments):
-        if not seg.transcript:
-            print(f"  [{i+1}/{len(segments)}] Skipping (no transcript): {seg.display_start}")
-            continue
+    to_process = [(i, seg) for i, seg in enumerate(segments) if seg.transcript]
 
-        print(f"  [{i+1}/{len(segments)}] Summarizing: {seg.display_start} → {seg.display_end}  speaker={seg.speaker}")
+    if not to_process:
+        print("  No transcripts to summarize.")
+        return segments
 
-        speaker_hint = f"The speaker is known as '{seg.speaker_name}'." if seg.speaker_name else ""
+    print(f"  Sending {len(to_process)} transcript(s) to Gemini in one call...")
 
-        prompt = f"""You are an assistant that processes Romanian religious sermon transcripts.
-{speaker_hint}
+    segments_payload = []
+    for idx, (i, seg) in enumerate(to_process):
+        segments_payload.append({
+            "index": idx,
+            "speaker": seg.speaker_name or seg.speaker,
+            "duration": seg.display_duration,
+            "transcript": seg.transcript,
+        })
 
-Below is a raw transcript from a speech segment ({seg.display_duration} long):
+    prompt = f"""You are an assistant that processes religious sermon transcripts.
 
----
-{seg.transcript}
----
+Below is a JSON array of speech segments from a single service recording.
+Each segment has an index, speaker name, duration, and raw transcript.
 
-Please return a valid JSON object (no markdown, no explanation):
-{{
-  "title": "Short descriptive title for this speech (max 8 words)",
-  "summary": "3-5 sentence summary of the main ideas",
-  "corrected_transcript": "The full transcript corrected for grammar, punctuation, and obvious transcription errors. Keep it faithful to the original.",
-  "speaker_name": "Name or role of the speaker if you can identify it from context, otherwise null"
-}}
+For EACH segment return a JSON object with:
+- "index": same index as input
+- "title": short descriptive title (max 8 words)
+- "summary": 3-5 sentence summary of the main ideas
+- "corrected_transcript": full transcript corrected for grammar, punctuation, and obvious transcription errors — keep it faithful to the original
+- "speaker_name": name or role of the speaker if identifiable from context, otherwise null
+
+Return ONLY a valid JSON array with one object per input segment, no markdown, no explanation.
+
+INPUT:
+{json.dumps(segments_payload, ensure_ascii=False, indent=2)}
 """
 
-        response = client.models.generate_content(
-            model=gemini_model,
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                response_mime_type="application/json",
-            ),
-        )
+    response = client.models.generate_content(
+        model=gemini_model,
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            response_mime_type="application/json",
+        ),
+    )
 
-        if not response.text:
-            finish = getattr(response.candidates[0], "finish_reason", "unknown") if response.candidates else "no candidates"
-            print(f"    Warning: empty response from Gemini (finish_reason={finish}), skipping summarization for this segment.")
+    if not response.text:
+        finish = getattr(response.candidates[0], "finish_reason", "unknown") if response.candidates else "no candidates"
+        print(f"  Warning: empty response from Gemini (finish_reason={finish}). Skipping summarization.")
+        return segments
+
+    results = json.loads(response.text)
+
+    results_by_index = {r["index"]: r for r in results}
+
+    for idx, (i, seg) in enumerate(to_process):
+        result = results_by_index.get(idx)
+        if not result:
+            print(f"  Warning: no result returned for segment {i+1}, keeping raw transcript.")
             seg.title = f"Segment {i+1}"
-            seg.summary = ""
             seg.corrected_transcript = seg.transcript
             continue
 
-        result = json.loads(response.text)
         seg.title = result.get("title", f"Segment {i+1}")
         seg.summary = result.get("summary", "")
         seg.corrected_transcript = result.get("corrected_transcript", seg.transcript)
         if result.get("speaker_name"):
             seg.speaker_name = result["speaker_name"]
 
-        print(f"    Title: {seg.title}")
+        print(f"  [{i+1}] {seg.title}  ({seg.speaker_name or seg.speaker})")
 
     return segments
