@@ -12,7 +12,7 @@ import requests
 
 
 DEFAULT_SAMPLING_PARAMS = {
-    "max_tokens": 4000,
+    "max_tokens": 16000,
     "temperature": 0.1,
     "top_p": 0.9,
 }
@@ -31,6 +31,7 @@ def call_runpod(
     endpoint_url: str,
     api_key: str,
     sampling_params: dict | None = None,
+    max_tokens: int | None = None,
 ) -> str:
     """
     Submit a job to a RunPod serverless LLM worker and return the response text.
@@ -44,10 +45,13 @@ def call_runpod(
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
     }
+    params = dict(sampling_params or DEFAULT_SAMPLING_PARAMS)
+    if max_tokens is not None:
+        params["max_tokens"] = max_tokens
     payload = {
         "input": {
             "messages": messages,
-            "sampling_params": sampling_params or DEFAULT_SAMPLING_PARAMS,
+            "sampling_params": params,
         }
     }
 

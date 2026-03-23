@@ -108,6 +108,12 @@ def parse_args():
         default="",
         help="RunPod API key (or set RUNPOD_API_KEY env var)",
     )
+    parser.add_argument(
+        "--runpod-max-tokens",
+        type=int,
+        default=16000,
+        help="max_tokens for RunPod LLM responses (default: 16000)",
+    )
     parser.add_argument("--skip-analyze",    action="store_true", help="Skip Step 1, load from output/segments.json")
     parser.add_argument("--skip-transcribe", action="store_true", help="Skip Step 2, re-use existing transcripts")
     parser.add_argument("--skip-summarize",  action="store_true", help="Skip Step 3, re-use existing summaries")
@@ -172,6 +178,7 @@ def main():
             backend=args.analyze_with,
             runpod_url=args.runpod_url,
             runpod_api_key=runpod_api_key,
+            runpod_max_tokens=args.runpod_max_tokens,
         )
         _save_segments(segments, segments_json)
         print(f"  Saved to {segments_json}")
@@ -217,6 +224,7 @@ def main():
             backend=args.summarize_with,
             runpod_url=args.runpod_url,
             runpod_api_key=runpod_api_key,
+            runpod_max_tokens=args.runpod_max_tokens,
         )
         _save_segments(segments, segments_json)
     else:

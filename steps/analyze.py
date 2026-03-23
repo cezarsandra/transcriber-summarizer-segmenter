@@ -95,6 +95,7 @@ def analyze(
     backend: Literal["gemini", "runpod"] = "gemini",
     runpod_url: str = "",
     runpod_api_key: str = "",
+    runpod_max_tokens: int = 16000,
 ) -> list[SpeechSegment]:
     """
     Send both JSON files as text to the chosen LLM backend and return SpeechSegments.
@@ -117,7 +118,7 @@ def analyze(
             {"role": "system", "content": SYSTEM_INSTRUCTION},
             {"role": "user", "content": prompt},
         ]
-        text = call_runpod(messages, endpoint_url=runpod_url, api_key=runpod_api_key)
+        text = call_runpod(messages, endpoint_url=runpod_url, api_key=runpod_api_key, max_tokens=runpod_max_tokens)
     else:
         text = call_gemini(prompt, system_instruction=SYSTEM_INSTRUCTION, api_key=api_key, model=gemini_model)
 

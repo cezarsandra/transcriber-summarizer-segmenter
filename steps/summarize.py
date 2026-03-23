@@ -34,6 +34,21 @@ INPUT:
 {payload}
 """
 
+PROMPT_TEMPLATE_LIGHT = """Below is a JSON array of speech segments from a single service recording.
+Each segment has an index, speaker name, duration, and raw transcript.
+
+For EACH segment return a JSON object with:
+- "index": same index as input
+- "title": short descriptive title (max 8 words)
+- "summary": 3-5 sentence summary of the main ideas
+- "speaker_name": name or role of the speaker if identifiable from context, otherwise null
+
+Return ONLY a valid JSON array with one object per input segment, no markdown, no explanation.
+
+INPUT:
+{payload}
+"""
+
 
 def summarize(
     segments: list[SpeechSegment],
@@ -42,6 +57,7 @@ def summarize(
     backend: Literal["gemini", "runpod"] = "gemini",
     runpod_url: str = "",
     runpod_api_key: str = "",
+    runpod_max_tokens: int = 16000,
 ) -> list[SpeechSegment]:
     """
     Summarize all transcribed segments in a single API call.
@@ -67,7 +83,8 @@ def summarize(
         for idx, (_, seg) in enumerate(to_process)
     ]
 
-    prompt = PROMPT_TEMPLATE.format(
+    template = PROMPT_TEMPLATE_LIGHT if backend == "runpod" else PROMPT_TEMPLATE
+    prompt = template.format(
         payload=json.dumps(payload, ensure_ascii=False, indent=2)
     )
 
@@ -78,7 +95,7 @@ def summarize(
             {"role": "system", "content": SYSTEM_INSTRUCTION},
             {"role": "user", "content": prompt},
         ]
-        text = call_runpod(messages, endpoint_url=runpod_url, api_key=runpod_api_key)
+        text = call_runpod(messages, endpoint_url=runpod_url, api_key=runpod_api_key, max_tokens=runpod_max_tokens)
     else:
         text = call_gemini(prompt, system_instruction=SYSTEM_INSTRUCTION, api_key=api_key, model=gemini_model)
 
@@ -99,7 +116,7 @@ def summarize(
 
         seg.title = result.get("title", f"Segment {i+1}")
         seg.summary = result.get("summary", "")
-        seg.corrected_transcript = result.get("corrected_transcript", seg.transcript)
+        seg.corrected_transcript = result.get("corrected_transcript") or seg.transcript
         if result.get("speaker_name"):
             seg.speaker_name = result["speaker_name"]
 
